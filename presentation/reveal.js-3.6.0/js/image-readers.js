@@ -82,3 +82,87 @@ function drawRGB(path, selector) {
         ctx.putImageData(imgData, 0, 0);
     });
 }
+
+function drawSubsampled(y_path, cb_path, cr_path, selector) {
+    loadPixels(y_path).then(y_src => {
+        loadPixels(cb_path).then(cb_src => {
+            loadPixels(cr_path).then(cr_src => {
+                var canvas = $(selector)[0];
+                canvas.width = y_src.width;
+                canvas.height = y_src.height;
+                var ctx = canvas.getContext("2d"); 
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                var imgData = ctx.createImageData(y_src.width, y_src.height);
+                var combinedSrc = new Uint8Array(y_src.data.length * 3);
+                var doubledCb = new Uint8Array(cb_src.data.length * 2);
+                var doubledCr = new Uint8Array(cr_src.data.length * 2);
+                var expandedCb = new Uint8Array(y_src.data.length);
+                var expandedCr = new Uint8Array(y_src.data.length);
+                console.log("doubledcb", doubledCb)
+
+                let index = 0;
+                // double up on width
+                for (var i = 0; i < cb_src.data.length; i++) {
+                    doubledCb[index] = cb_src.data[i];
+                    doubledCb[index + 1] = cb_src.data[i];
+                    doubledCr[index] = cr_src.data[i];
+                    doubledCr[index + 1] = cr_src.data[i];
+                    index+=2;
+                }
+
+                const y_w = parseInt(y_src.width);
+                const y_h = parseInt(y_src.height);
+                var e_cb = []
+                var e_cr = []
+                // double up on height
+                console.log("len", doubledCb.length)
+                console.log("src len", y_src.data.length)
+                for (var begin = 0; begin < y_src.data.length / 2; begin+=y_w) {
+                    for (var x = 0; x < 2; x++) {
+                        for (var i = begin; i < begin + y_w; i++) {
+                            e_cb.push(doubledCb[i]);
+                            e_cr.push(doubledCr[i]);
+                        }
+                    }
+                }
+                for (var i = 0; i < y_w; i++) {
+
+                    e_cb.push(128);
+                    e_cr.push(128);
+                }
+                expandedCb = Uint8Array.from(e_cb);
+                expandedCr = Uint8Array.from(e_cr);
+                index = 0;
+                for (var i = 0; i < combinedSrc.length; i+=3) {
+                    let rgb = ycbcrToRGB(y_src.data[index], expandedCb[index], expandedCr[index]);
+                    combinedSrc[i] = rgb[0];
+                    combinedSrc[i + 1] = rgb[1];
+                    combinedSrc[i + 2] = rgb[2];
+                    index++;
+                }
+
+                var source_index = 0;
+                for (var i = 0; i < imgData.data.length; i++) {
+                    if (i % 4 == 3) {
+                        imgData.data[i] = 255;
+                        continue;
+                    }
+                    imgData.data[i] = combinedSrc[source_index];
+                    source_index++;
+                }
+                ctx.putImageData(imgData, 0, 0);
+            });
+        });
+    });
+}
+
+function ycbcrToRGB(y,cb,cr) {
+    let r = y                        + (1.403 * (cr - 128));
+    let g = y - (0.344 * (cb - 128)) - (0.714 * (cr - 128));
+    let b = y + (1.772 * (cb - 128));
+    return [clamp(r),clamp(g),clamp(b)];
+}
+
+function clamp(x) {
+    return Math.min(Math.max(x, 0), 255);
+}

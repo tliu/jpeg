@@ -69,3 +69,22 @@ for c in range(height):
         if c % 2 == 1:
             continue
         cb_half_file.write(chr(ycbcr["cr"][r + c * width]))
+
+
+
+print "Writing float Y values..."
+y_file = open("../frontend/out/%s-%dx%d.y_f" % (src_file, source.size[0], source.size[1]), "wb")
+for px in ycbcr["y_f"]:
+    y_file.write(struct.pack("f", px))
+
+print "Writing raw Cb values..."
+cb_file = open("../frontend/out/%s-%dx%d.cb_f" % (src_file, source.size[0], source.size[1]), "wb")
+for px in ycbcr["cb_f"]:
+    cb_file.write(struct.pack("f", px))
+
+print "Writing raw Cr values..."
+cr_file = open("../frontend/out/%s-%dx%d.cr_f" % (src_file, source.size[0], source.size[1]), "wb")
+for px in ycbcr["cr_f"]:
+    cr_file.write(struct.pack("f", px))
+
+
