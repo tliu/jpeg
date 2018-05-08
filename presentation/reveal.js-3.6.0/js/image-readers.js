@@ -39,27 +39,32 @@ function loadPixels(path) {
 
 // Read 1byte per px
 function drawGrayscale(path, selector) {
-    loadPixels(path).then(src => {
-        var canvas = $(selector)[0];
-        canvas.width = src.width;
-        canvas.height = src.height;
-        var ctx = canvas.getContext("2d"); 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var imgData = ctx.createImageData(src.width, src.height);
-        var source_index = 0;
-        for (var i = 0; i < imgData.data.length; i++) {
-            if (i % 4 == 3) {
-                imgData.data[i] = 255;
-                source_index++;
-                continue;
-            }
-            imgData.data[i] = src.data[source_index];
-        }
-        ctx.putImageData(imgData, 0, 0);
-
+    return new Promise((resolve, reject) => {
+        loadPixels(path).then(src => {
+            var canvas = $(selector)[0];
+            drawToCanvasGrayscale(src, canvas);
+            resolve(src);
+        });
     });
 }
 
+function drawToCanvasGrayscale(src, canvas) {
+    canvas.width = src.width;
+    canvas.height = src.height;
+    var ctx = canvas.getContext("2d"); 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var imgData = ctx.createImageData(src.width, src.height);
+    var source_index = 0;
+    for (var i = 0; i < imgData.data.length; i++) {
+        if (i % 4 == 3) {
+            imgData.data[i] = 255;
+            source_index++;
+            continue;
+        }
+        imgData.data[i] = src.data[source_index];
+    }
+    ctx.putImageData(imgData, 0, 0);
+}
 
 // Read 3 bytes per px
 function drawRGB(path, selector) {
@@ -98,7 +103,6 @@ function drawSubsampled(y_path, cb_path, cr_path, selector) {
                 var doubledCr = new Uint8Array(cr_src.data.length * 2);
                 var expandedCb = new Uint8Array(y_src.data.length);
                 var expandedCr = new Uint8Array(y_src.data.length);
-                console.log("doubledcb", doubledCb)
 
                 let index = 0;
                 // double up on width
@@ -115,8 +119,6 @@ function drawSubsampled(y_path, cb_path, cr_path, selector) {
                 var e_cb = []
                 var e_cr = []
                 // double up on height
-                console.log("len", doubledCb.length)
-                console.log("src len", y_src.data.length)
                 for (var begin = 0; begin < y_src.data.length / 2; begin+=y_w) {
                     for (var x = 0; x < 2; x++) {
                         for (var i = begin; i < begin + y_w; i++) {
@@ -166,3 +168,40 @@ function ycbcrToRGB(y,cb,cr) {
 function clamp(x) {
     return Math.min(Math.max(x, 0), 255);
 }
+
+
+
+// Read 1byte per px
+function draw64x64(path, selector) {
+    return new Promise((resolve, reject) => {
+        loadPixels(path).then(src => {
+            var canvas = $(selector)[0];
+            canvas.width = 64;
+            canvas.height = 64;
+            var ctx = canvas.getContext("2d"); 
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            var imgData = ctx.createImageData(64, 64);
+            var source_index = 0;
+
+            var byteArray = new Uint8Array(64 * 64);
+            var ind = 0;
+            for (var i = 0; i < 64; i++) {
+                for (var j = 0; j < 64; j++) {
+                    byteArray[ind] = src.data[(src.width * i) + j];
+                    ind++;
+                }
+            }
+            for (var i = 0; i < imgData.data.length; i++) {
+                if (i % 4 == 3) {
+                    imgData.data[i] = 255;
+                    source_index++;
+                    continue;
+                }
+                imgData.data[i] = byteArray[source_index];
+            }
+            ctx.putImageData(imgData, 0, 0);
+            resolve(byteArray);
+        });
+    })
+}
+

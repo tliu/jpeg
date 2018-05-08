@@ -32,7 +32,7 @@
                     <p><small> 3 types of borders in this presentation:</small></p>
                     <div class="key-border" style="width: 150px; height:150px"><i class="fas fa-image" style="margin-top: 20px;"></i><p><small>image</small></p></div>
                     <div class="key-canvas" style="width: 150px; height:150px"><i class="fas fa-paint-brush" style="margin-top: 20px;"></i><p><small>canvas</small></p></div>
-                    <div class="key-zoom" style="width: 150px; height:150px"><i class="fas fa-search" style="margin-top: 20px;"></i><p><small>zoomable canvas</small></p></div>
+                    <div class="key-zoom" style="width: 150px; height:150px"><i class="fas fa-search" style="margin-top: 20px;"></i><p><small>zoomable</small></p></div>
                 </section>
 
 				<section>
@@ -57,7 +57,7 @@
 
                     <section>
                     <div class="left" style="width: 740px">
-                        <img src="img/waterfall_smaller.bmp">
+                        <img src="img/waterfall_smaller.bmp" style="max-height: 95%; max-width: 95%;">
                     </div>
                     <div class="right" style="width: 200px">
                         <p>rgb</p>
@@ -205,6 +205,230 @@
 
                 </section>
 
+                <section>
+                    <h3>JPEG Compression - Macro Blocks</h3>
+                    <section>
+                        <p style="margin-top: 30px;">
+                        <img class="zoomable" src="img/waterfall10.jpg" style="width: 800px; height: 515px" data-zoom="10">
+                        Photoshop save as jpeg q=1
+                        </p>
+                    </section>
+
+                    <section>
+                        <p>split image into 8x8 macro blocks</p>
+                        <div style="position: relative; margin: auto; width: 320px; height: 320px; display: inline-block;">
+                            <canvas class="border macroblock-canvas" id="y-macroblock-canvas"></canvas>
+                            <div class="macroblock" id="macroblock-pointer"></div>
+                        </div>
+
+                        <table id="macroblock-display" style="table-layout: fixed; display: inline-block;">
+                            <tr><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"></tr>
+                            <tr><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"></tr>
+                            <tr><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"></tr>
+                            <tr><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"></tr>
+                            <tr><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"></tr>
+                            <tr><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"></tr>
+                            <tr><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"></tr>
+                            <tr><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"><td class="macroblock-cell"></tr>
+                        </table>
+                    </section>
+
+                </section>
+                <section>
+                    <h3>JPEG Compression - Discrete Cosine Transform</h3>
+                    <section>
+                        <blockquote>Next, each 8×8 block of each component (Y, Cb, Cr) is converted to a frequency-domain representation, using a normalized, two-dimensional type-II discrete cosine transform.</blockquote>
+                        <p class="fragment fade-in">...thanks wikipedia</p>
+                    </section>
+
+                    <section>
+                        <img src="img/dct.svg" class="no-border"></img>
+                        <p class="small-text fragment fade-in">
+                        <img src="img/u.svg" class="no-border"></img> is the horizontal spatial frequency from 0 to 7
+                        </p>
+                        <p class="small-text fragment fade-in">
+                        <img src="img/v.svg" class="no-border"></img> is the vertical spatial frequency from 0 to 7
+                        </p>
+                        <p class="small-text fragment fade-in">
+                        <img src="img/alpha.svg" class="no-border"></img>
+                        </p>
+                        <p class="small-text fragment fade-in">
+                        <img src="img/gxy.svg" class="no-border"></img> pixel value at <img src="img/xy.svg" class="no-border"></img>
+                        </p>
+                    </section>
+                    <section>
+                        <img src="img/cosx.png" style="width: 60%"></img>
+                    </section>
+                    <section>
+                        <img src="img/cos2x.png" style="width: 60%"></img>
+                    </section>
+                    <section>
+                        <img src="img/cosxcos2x.png" style="width: 60%"></img>
+                    </section>
+                    <section>
+                        <img src="img/dct.svg" class="no-border"></img>
+                        <p>
+                        <img src="img/dct.png" class="no-border" style="width: 45%"></img>
+                        </p>
+                    </section>
+                    <section>
+                        <p style="display:inline-block">
+                        <img id="dctpng" src="img/dct.png" class="no-border" style="width: 320px"></img>
+                        </p>
+                        <canvas id="dct-canvas" class="border" style="display: inline-block; width: 560px; height: 360px;" data-zoom="15">
+                    </section>
+                    <section>
+                        <div style="position: relative; margin: auto; width: 320px; height: 320px; display: inline-block; margin-top: 20px;">
+                            <canvas class="border macroblock-canvas" id="y-macroblock-canvas2"></canvas>
+                            <div class="macroblock" id="macroblock-pointer2"></div>
+                        </div>
+                        <div>
+
+                        <table id="macroblock-display2" style="table-layout: fixed; display: inline-block;">
+                            <tr><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"></tr>
+                            <tr><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"></tr>
+                            <tr><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"></tr>
+                            <tr><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"></tr>
+                            <tr><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"></tr>
+                            <tr><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"></tr>
+                            <tr><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"></tr>
+                            <tr><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"></tr>
+                        </table>
+
+                        <table id="macroblock-display-normalized" style="table-layout: fixed; display: inline-block;">
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                        </table>
+
+                        <table id="macroblock-display-dct" style="table-layout: fixed; display: inline-block;">
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                        </table>
+                    </div>
+                    </section>
+                </section>
+
+                <section>
+                    <h3>JPEG Encoding - Quantization</h3>
+                    <section>
+                        <p><small>Next: divide matrix element-wise by a quantization matrix</small></p>
+                        <p><small>Some suggested tables from the annex of the JPEG standard:</small></p>
+                        <div style="display: inline-block">
+                            <img src="img/quant.svg" class="no-border"></img>
+                            <p><small>table for Y, q=50</small></p>
+                        </div>
+                        <div style="display: inline-block">
+                            <img src="img/cquant.svg" class="no-border"></img>
+                            <p><small>table for Cb,Cr, q=50</small></p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div style="position: relative; margin: auto; width: 240px; height: 240px; display: inline-block; margin-top: 20px;">
+                            <canvas class="border macroblock-canvas2" id="y-macroblock-canvas3"></canvas>
+                            <div class="macroblock3" id="macroblock-pointer3"></div>
+                        </div>
+                        <div>
+                        <table id="macroblock-display-dct2" style="table-layout: fixed; display: inline-block;">
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                        </table>
+
+                        <table id="macroblock-display-quant" style="table-layout: fixed; display: inline-block;">
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                        </table>
+                    </div>
+                    </section>
+
+                </section>
+                <section>
+                    <h3>JPEG Encoding - Run Length Encoding</h3>
+                    <section>
+                        <p><small>Simple zig-zag pattern leads to great compression because of prior steps</small></p>
+                        <img src="img/zig.svg" class="no-border" style="width: 50%"></img>
+                    </section>
+
+                <section>
+                    <div style="margin-top: -80px">
+                    <div style="position: relative; margin: auto; width: 240px; height: 240px; display: inline-block; margin-top: 20px;">
+                        <canvas class="border macroblock-canvas2" id="y-macroblock-canvas4"></canvas>
+                        <div class="macroblock3" id="macroblock-pointer4"></div>
+                    </div>
+                        <table id="macroblock-display-quant2" style="table-layout: fixed; display: inline-block;">
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
+                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
+                        </table>
+                    <div id="rle"></div>
+                </div>
+                </section>
+                <section>
+                    38, -3, 4, -6, 1, 1, 1, -2, 2, 0, -2, -2, 3, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                    <p><i class="fas fa-arrow-down"></i></p>
+                    (6, 38), (0, -3), (0, 4), (0, -6), (0, 1), (0, 1), (0, 1), (0, -2), (0, 2), (1, -2), (0, -2), (0, 3), (5, -1), (0, -1), (3, -1), (0, 0)
+                </section>
+
+                </section>
+
+                <section>
+                    <h3>Finishing up</h3>
+                    <section>
+                        <a href="https://en.wikipedia.org/wiki/Huffman_coding">Use Huffman codes to losslessly compress the result</a>
+                        <p><i class="fas fa-arrow-down"></i></p>
+                        <p>Write some headers:
+                            <ul>
+                                <li>huffman tables</li>
+                                <li>image data</li>
+                                <li>thumbnail</li>
+                                <li><a href="https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format">more reading</a></li>
+                            </ul>
+                        </p>
+                    </section>
+                    <section>
+                        <p>JPEG standard first relased in 1992</p>
+                        <p>Newer image formats:
+                            <ul>
+                                <li>JPEG2000</li>
+                                <li>Google WebP</li>
+                                <li>Apple HEIC</li>
+                            </ul>
+                        </p>
+
+                    </section>
+                    <section>
+                        <img src="img/questions.jpg" class="no-border" style="width: 640px; height: 480px"></img>
+                    </section>
+                </section>
 			</div>
 		</div>
 
@@ -212,6 +436,7 @@
 		<script src="js/zepto.min.js"></script>
 		<script src="js/reveal.js"></script>
 		<script src="js/image-readers.js"></script>
+		<script src="js/dct.js"></script>
 		<script src="js/jpeg-pres.js"></script>
 
 		<script>
