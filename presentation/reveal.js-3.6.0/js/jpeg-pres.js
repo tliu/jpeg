@@ -24,6 +24,11 @@ function go() {
         }
     }
 
+    window.zoomLevel =2;
+    $("#zoom-slider").change(e => {
+      window.zoomLevel = parseInt($("#zoom-slider").val());
+      $("#zoom-disp").html(window.zoomLevel);
+    });
     drawRGB("img/waterfall_smaller-1920x1237.rgb", "#rgb-canvas");
     drawGrayscale("img/waterfall_smaller-1920x1237.y", "#y-canvas");
     drawGrayscale("img/waterfall_smaller-1920x1237.cb", "#cb-canvas");
@@ -47,7 +52,7 @@ function go() {
         $("#y-macroblock-canvas").mousemove(function(e) {
             var img = $(this);
             var zoom = $(".slides").css("zoom");
-            var parentOffset = img.offset(); 
+            var parentOffset = img.offset();
             var relX = e.pageX - img.offset().left * zoom;
             var relY = e.pageY - img.offset().top * zoom;
             var rx = relX / (img.width() * zoom);
@@ -68,7 +73,7 @@ function go() {
         $("#y-macroblock-canvas2").mousemove(function(e) {
             var img = $(this);
             var zoom = $(".slides").css("zoom");
-            var parentOffset = img.offset(); 
+            var parentOffset = img.offset();
             var relX = e.pageX - img.offset().left * zoom;
             var relY = e.pageY - img.offset().top * zoom;
             var rx = relX / (img.width() * zoom);
@@ -91,7 +96,7 @@ function go() {
         $("#y-macroblock-canvas3").mousemove(function(e) {
             var img = $(this);
             var zoom = $(".slides").css("zoom");
-            var parentOffset = img.offset(); 
+            var parentOffset = img.offset();
             var relX = e.pageX - img.offset().left * zoom;
             var relY = e.pageY - img.offset().top * zoom;
             var rx = relX / (img.width() * zoom);
@@ -114,7 +119,7 @@ function go() {
             console.log('why')
             var img = $(this);
             var zoom = $(".slides").css("zoom");
-            var parentOffset = img.offset(); 
+            var parentOffset = img.offset();
             var relX = e.pageX - img.offset().left * zoom;
             var relY = e.pageY - img.offset().top * zoom;
             var rx = relX / (img.width() * zoom);
@@ -138,7 +143,7 @@ function go() {
         $("#dctpng").click(function(e) {
             var img = $(this);
             var zoom = $(".slides").css("zoom");
-            var parentOffset = img.offset(); 
+            var parentOffset = img.offset();
             var relX = e.pageX - img.offset().left * zoom;
             var relY = e.pageY - img.offset().top * zoom;
             var rx = relX / (img.width() * zoom);
@@ -154,26 +159,25 @@ function go() {
     var zooming = false;
     $(".zoomable").each(function(index) {
         const img = $(this);
-        img.zoomLevel = parseFloat(img.data('zoom')) || 2;
         $(this).wrap("<div class='zoom-container' style='width:" + img.width() + "px; height:" + img.height() + "px;'>");
         var p  = $(this).parent()
         $(this).parent().mousemove(function(e) {
             if (zooming) {
                 var zoom = $(".slides").css("zoom");
-                var parentOffset = p.offset(); 
-                var relX = e.pageX - p.offset().left * zoom 
+                var parentOffset = p.offset();
+                var relX = e.pageX - p.offset().left * zoom
                 var relY = e.pageY - p.offset().top * zoom
                 var rx = relX / (p.width() * zoom) - .5;
                 var ry = relY / (p.height() * zoom) - .5;
                 var rect = img.get(0).getBoundingClientRect();
-                img.css("left", (-rx * rect.width) + (rx * p.width())); 
-                img.css("top", (-ry * rect.height) + (ry * p.height())); 
+                img.css("left", (-rx * rect.width) + (rx * p.width()));
+                img.css("top", (-ry * rect.height) + (ry * p.height()));
             }
         });
 
         $(this).parent().mouseenter(function(e) {
             if (!zooming) {
-                img.css("transform", `scale(${img.zoomLevel})`);
+                img.css("transform", `scale(${window.zoomLevel})`);
                 zooming = true;
             }
        });

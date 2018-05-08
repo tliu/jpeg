@@ -437,6 +437,9 @@
                 </section>
 			</div>
 		</div>
+                <div style="position: absolute; left: 0; bottom: 0">
+                  zoom: <input type="range" min="1" max="20" value="2" id="zoom-slider" style="z-index: 100"><span id="zoom-disp">2</span>
+                </div>
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/zepto.min.js"></script>
@@ -450,6 +453,8 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+        progress: false,
+        history: true,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
