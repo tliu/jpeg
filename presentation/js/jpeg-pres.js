@@ -84,7 +84,6 @@ function go() {
             var y = Math.floor(ry * 8);
             var block = getMacroblock(x, y, window.mData, 64, 64);
             displayMacroblock(block, "#macroblock-display2", "-smaller", true);
-            displayMacroblock(block.map(x => { return x - 127 }), "#macroblock-display-normalized", "-smaller", false);
             displayMacroblock(fromsq(dct2d(tosq(block))).map(x => {return Math.round(x);}), "#macroblock-display-dct", "-smaller", false);
 
         });

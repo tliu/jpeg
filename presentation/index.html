@@ -102,14 +102,20 @@
 
                 </section>
 
+                </section>
                 <section>
-                    <h2>Lossy vs Lossless</h2>
-                    <h5>Common formats on the web</h5>
-                    <ul>
-                        <li>Lossless: png, svg</li>
-                        <li>Lossy: jpeg, gif</li>
-                    </ul>
-                    <p>How do we figure out what data we can throw out and still have an image that looks good enough?</p>
+                    <h3>JPEG Compression - Colorspace Conversion</h3>
+
+                    <section>
+                        <h5>Human Eye</h5>
+                        <p>
+                        ~90 million rods <small>(Curcio, C. A.; Sloan, K. R.; et al. (1990). "Human photoreceptor topography". The Journal of Comparative Neurology. 292 (4): 497–523.)</small>
+                        </p>
+                        <p>
+                        ~6 million cones <small>(Osterberg, G. (1935). "Topography of the layer of rods and cones in the human retina". Acta Ophthalmol. Suppl. 13 (6): 1–102.)</small>
+                        </p>
+                    </section>
+
                 </section>
 
                 <section>
@@ -126,59 +132,8 @@
                     <small>C<sub>b</sub>C<sub>r</sub> color plane at Y=0.5 (<a href="https://en.wikipedia.org/wiki/YCbCr">source</a>)</small>
                     </div>
                     </section>
-                    <section>
-                        <p>RGB <i class="fas fa-arrow-right"></i> YC<sub>b</sub>C<sub>r</sub></p>
-                        <code>
-                            Y = .299*R + .587*G + .114*B
-                            <br>
-                            Cb = 128 + -.169*R + -.331*G + .5*B
-                            <br>
-                            Cr = 128 + .5*R + -.419*G + .081*B
-                        </code>
-                    </section>
-
-
                 </section>
 
-                <section>
-                    <h3>JPEG Compression - Colorspace Conversion</h3>
-
-                    <section>
-                        <h5>Human Eye</h5>
-                        <p>
-                        ~90 million rods <small>(Curcio, C. A.; Sloan, K. R.; et al. (1990). "Human photoreceptor topography". The Journal of Comparative Neurology. 292 (4): 497–523.)</small>
-                        </p>
-                        <p>
-                        ~6 million cones <small>(Osterberg, G. (1935). "Topography of the layer of rods and cones in the human retina". Acta Ophthalmol. Suppl. 13 (6): 1–102.)</small>
-                        </p>
-                    </section>
-
-                    <section>
-                        RGB rendered to canvas
-                        <canvas class="border" id="rgb-canvas" style="width:800px; height: 515px;"></canvas>
-                    </section>
-                    <section>
-                        Y channel rendered to canvas
-                        <canvas class="border" id="y-canvas" style="width:800px; height: 515px;"></canvas>
-                    </section>
-                    <section>
-                        C<sub>b</sub> channel rendered to canvas
-                        <canvas class="zoomable" id="cb-canvas" style="width:800px; height: 515px;"></canvas>
-                    </section>
-                    <section>
-                        C<sub>r</sub> channel rendered to canvas
-                        <canvas class="zoomable" id="cr-canvas" style="width:800px; height: 515px;"></canvas>
-                    </section>
-
-                    <section>
-                        <img src="img/ycbcr.png">
-                        <p>
-                        Because our eyes are much more sensitive to changes in brightness,  we can send the Y channel at full resolution and sub sample some of the color channels.
-                        </p>
-                    </section>
-
-
-                </section>
 
 
                 <section>
@@ -187,21 +142,9 @@
                         <p><canvas class="border" id="y-full-canvas" style="width:400px; height: 257px;"></canvas>
                         <canvas class="border" id="cb-half-canvas" style="width:200px; height: 128px;"></canvas>
                         <canvas class="border" id="cr-half-canvas" style="width:200px; height: 128px;"></canvas></p>
-                        <p><small>4:2:0 subsampling (half vertical and horizontal resolution)</small></p>
+                        <p><small>Chrominance channels look washed out because there is not actually much change in color, so we can downsample those channels and not lose much</small></p>
                         <p><small><a href="https://en.wikipedia.org/wiki/Chroma_subsampling">additional reading</a></small></p>
                     </section>
-                    <section>
-                        <p><img src="img/subsample.png"></p>
-                    </section>
-                    <section>
-                        RGB rendered to canvas
-                        <canvas class="zoomable" id="rgb-full-canvas" style="width:800px; height: 515px;"></canvas>
-                    </section>
-                    <section>
-                        Y, subsampled colors rendered to canvas
-                        <canvas class="zoomable" id="rgb-sub-canvas" style="width:800px; height: 515px;"></canvas>
-                    </section>
-
 
                 </section>
 
@@ -234,49 +177,27 @@
                     </section>
 
                 </section>
+
                 <section>
-                    <h3>JPEG Compression - Discrete Cosine Transform</h3>
+                    <h3>JPEG Compression - Run Length Encoding</h3>
                     <section>
-                        <blockquote>Next, each 8×8 block of each component (Y, Cb, Cr) is converted to a frequency-domain representation, using a normalized, two-dimensional type-II discrete cosine transform.</blockquote>
-                        <p class="fragment fade-in">...thanks wikipedia</p>
+                        <p class="fragment fade-in">Encode runs of similar data to save space<p>
+                        <p class="fragment fade-in">1,1,1,1,1,0,0,0,0,0<p>
+                        <p class="fragment fade-in">5,1,5,0<p>
                     </section>
 
+
                     <section>
-                        <img src="img/dct.svg" class="no-border"></img>
-                        <p class="small-text fragment fade-in">
-                        <img src="img/u.svg" class="no-border"></img> is the horizontal spatial frequency from 0 to 7
-                        </p>
-                        <p class="small-text fragment fade-in">
-                        <img src="img/v.svg" class="no-border"></img> is the vertical spatial frequency from 0 to 7
-                        </p>
-                        <p class="small-text fragment fade-in">
-                        <img src="img/alpha.svg" class="no-border"></img>
-                        </p>
-                        <p class="small-text fragment fade-in">
-                        <img src="img/gxy.svg" class="no-border"></img> pixel value at <img src="img/xy.svg" class="no-border"></img>
-                        </p>
+                        <p class="fragment fade-in">0, 60, 61, 1, 3, 60, 55, 0, 60, 50, 55</p>
+                        <p class="fragment fade-in">61, 60, 60, 60, 55, 55, 50, 3, 1, 0, 0</p>
+                        <p class="fragment fade-in">60, 60, 60, 60, 55, 55, 55, 0, 0, 0, 0</p>
+                        <p class="fragment fade-in">58, 58, 58, 58, 58, 58, 58, 0, 0, 0, 0</p>
                     </section>
-                    <section>
-                        <img src="img/cosx.png" style="width: 60%"></img>
-                    </section>
-                    <section>
-                        <img src="img/cos2x.png" style="width: 60%"></img>
-                    </section>
-                    <section>
-                        <img src="img/cosxcos2x.png" style="width: 60%"></img>
-                    </section>
-                    <section>
-                        <img src="img/dct.svg" class="no-border"></img>
-                        <p>
-                        <img src="img/dct.png" class="no-border" style="width: 45%"></img>
-                        </p>
-                    </section>
-                    <section>
-                        <p style="display:inline-block">
-                        <img id="dctpng" src="img/dct.png" class="no-border" style="width: 320px"></img>
-                        </p>
-                        <canvas id="dct-canvas" class="zoomable" style="display: inline-block; width: 560px; height: 360px;" data-zoom="15">
-                    </section>
+
+                </section>
+
+                <section>
+                    <h3>JPEG Compression - Discrete Cosine Transform</h3>
                     <section>
                         <div style="position: relative; margin: auto; width: 320px; height: 320px; display: inline-block; margin-top: 20px;">
                             <canvas class="border macroblock-canvas" id="y-macroblock-canvas2"></canvas>
@@ -295,16 +216,6 @@
                             <tr><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"><td class="macroblock-cell-smaller"></tr>
                         </table>
 
-                        <table id="macroblock-display-normalized" style="table-layout: fixed; display: inline-block;">
-                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
-                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
-                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
-                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
-                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
-                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
-                            <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
-                            <tr><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"></tr>
-                        </table>
 
                         <table id="macroblock-display-dct" style="table-layout: fixed; display: inline-block;">
                             <tr><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"><td class="macroblock-cell-bg2"><td class="macroblock-cell-bg"></tr>
@@ -391,49 +302,6 @@
                         </table>
                     <div id="rle"></div>
                 </div>
-                </section>
-                <section>
-                    38, -3, 4, -6, 1, 1, 1, -2, 2, 0, -2, -2, 3, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                    <p><i class="fas fa-arrow-down"></i></p>
-                    (6, 38), (0, -3), (0, 4), (0, -6), (0, 1), (0, 1), (0, 1), (0, -2), (0, 2), (1, -2), (0, -2), (0, 3), (5, -1), (0, -1), (3, -1), (0, 0)
-                </section>
-                <section>
-                    (6, 38), (0, -3), (0, 4), (0, -6), (0, 1), (0, 1), (0, 1), (0, -2), (0, 2), (1, -2), (0, -2), (0, 3), (5, -1), (0, -1), (3, -1), (0, 0)
-                    <p><small>DC coefficients coded as difference between current block and last block, in the form of (size, value).  Size is encoded using a huffman symbol.</small></p>
-                    <p><small>AC coefficients coded as (run length, size, value).  Run length and size are allocated as 4 bits each and the byte is encoded using a huffman symbol.</small></p>
-                    <p><small>Huffman symbol for (0, 0) denotes end of block</small></p>
-                </section>
-
-                </section>
-
-                <section>
-                    <h3>Finishing up</h3>
-                    <section>
-                        <a href="https://en.wikipedia.org/wiki/Huffman_coding">Use Huffman codes to losslessly compress the result</a>
-                        <p><i class="fas fa-arrow-down"></i></p>
-                        <p>Write some headers:
-                            <ul>
-                                <li>huffman tables</li>
-                                <li>image data</li>
-                                <li>thumbnail</li>
-                                <li><a href="https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format">more reading</a></li>
-                            </ul>
-                        </p>
-                    </section>
-                    <section>
-                        <p>JPEG standard first relased in 1992</p>
-                        <p>Newer image formats:
-                            <ul>
-                                <li>JPEG2000</li>
-                                <li>Google WebP</li>
-                                <li>Apple HEIC</li>
-                            </ul>
-                        </p>
-
-                    </section>
-                    <section>
-                        <img src="img/questions.jpg" class="no-border" style="width: 640px; height: 480px"></img>
-                    </section>
                 </section>
 			</div>
 		</div>
