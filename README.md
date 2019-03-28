@@ -1,4 +1,4 @@
-cd into presentation and run a webserver like `python -m SimpleHTTPServer`
+cd into presentation and run a webserver like `python -m SimpleHTTPServer`, then visit the root (localhost:8000)
 
 /scripts has some python scripts to generate images from a bitmap
 
